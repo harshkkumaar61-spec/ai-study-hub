@@ -75,15 +75,12 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database (MySQL) — ensure credentials match your local MySQL
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'college_hub_db',
-        'USER': 'root',
-        'PASSWORD': 'secret@code',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        "default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))
-    }
+    'default': dj_database_url.config(
+        # Render apne aap 'DATABASE_URL' environment variable de dega
+        # agar aapne database ko service se connect kiya hai
+        default=os.environ.get('DATABASE_URL'),
+        conn_max_age=600
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = [
