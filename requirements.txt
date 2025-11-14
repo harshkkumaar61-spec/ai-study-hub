@@ -17,3 +17,7 @@ Pillow           # <-- Profile Pics (ImageField) ke liye zaroori hai
 llama-index
 llama-index-llms-ollama
 llama-index-embeddings-ollama
+
+# Media Files (AWS S3 Storage ke liye)
+django-storages
+boto3
