@@ -1,6 +1,8 @@
 // ===== GLOBAL VARIABLES =====
 // FIX: API_BASE ko local Django server par point kiya
-const BASE_URL = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api"; // <--- YAHAN FIX KIYA!
+const API_BASE = (window.API_BASE && window.API_BASE.trim())
+  ? window.API_BASE.trim()
+  : 'https://ungregariously-unbangled-braxton.ngrok-free.dev/api';// <--- YAHAN FIX KIYA!
 let currentUser = null;
 let authToken = localStorage.getItem('authToken'); // Token ko load kiya
 let currentResources = [];
