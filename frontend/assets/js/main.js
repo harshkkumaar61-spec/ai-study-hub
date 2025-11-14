@@ -1,6 +1,6 @@
 // ===== GLOBAL VARIABLES =====
-// FIX: API_BASE ko Ngrok ke live server par point kiya
-const BASE_URL = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api"; // <--- YAHAN FIX KIYA!
+// FIX: Variable ka naam (API_BASE) aur URL (Ngrok) dono fix kar diye
+const API_BASE = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api"; // <--- YAHAN FIX KIYA!
 let currentUser = null;
 let authToken = localStorage.getItem('authToken'); // Token ko load kiya
 let currentResources = [];
@@ -19,9 +19,6 @@ async function refreshToken() {
     }
 
     try {
-        // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-        // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-        const API_BASE = BASE_URL; 
         const response = await fetch(`${API_BASE}/auth/token/refresh/`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -167,9 +164,6 @@ function setupEventListeners() {
 
 // ===== AUTHENTICATION FUNCTIONS =====
 async function verifyEmailToken(token) {
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Is request mein token nahi chahiye, toh normal fetch use karenge
         
@@ -180,7 +174,7 @@ async function verifyEmailToken(token) {
             body: JSON.stringify({ token: token })
         });
         // --- YAHAN TAK ---
-
+        
         const data = await response.json();
         if (response.ok) {
             showNotification(data.message, 'success');
@@ -201,9 +195,6 @@ async function fetchUserProfile() {
         updateNavForLoggedInUser();
         return;
     }
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // === FIX ===
         // Ab 'fetchWithAuth' use karenge
@@ -415,9 +406,6 @@ async function handleLogin(e) {
     submitBtn.innerHTML = '<div class="loading"></div> Logging in...';
     submitBtn.disabled = true;
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Login request ko token nahi chahiye
         const response = await fetch(`${API_BASE}/auth/login/`, {
@@ -462,9 +450,6 @@ async function handleRegister(e) {
     submitBtn.innerHTML = '<div class="loading"></div> Creating account...';
     submitBtn.disabled = true;
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Register request ko token nahi chahiye
         const response = await fetch(`${API_BASE}/auth/register/`, {
@@ -497,9 +482,6 @@ async function handleRegister(e) {
 async function populateUploadFormSubjects() {
     const select = document.getElementById('uploadSubject');
     select.innerHTML = '<option value="">Loading subjects...</option>';
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Yeh request public hai (AllowAny), toh normal fetch theek hai
         const response = await fetch(`${API_BASE}/resources/subjects/`);
@@ -562,9 +544,6 @@ async function handleUpload(e) {
     formData.append('resource_type', type);
     formData.append('pdf_file', file);
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         const response = await fetchWithAuth(`${API_BASE}/resources/files/`, {
             method: 'POST',
@@ -626,9 +605,6 @@ async function handleProfileUpdate(e) {
         formData.append('profile_pic', file);
     }
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // === FIX ===
         // 'fetchWithAuth' use karenge
@@ -670,9 +646,6 @@ async function loadResources() {
 
     showLoading('resourcesGrid');
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         let url = `${API_BASE}/resources/files/`;
         const params = new URLSearchParams();
@@ -781,9 +754,6 @@ function getResourceDescription(resource) {
 }
 
 async function loadSubjects() {
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Yeh public hai, normal fetch
         const response = await fetch(`${API_BASE}/resources/subjects/`);
@@ -854,9 +824,6 @@ async function downloadResource(resourceId, pdfUrl) {
         return;
     }
     
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // === FIX ===
         // 'fetchWithAuth' use karenge
@@ -892,9 +859,6 @@ async function loadHistory() {
         </div>
     `;
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // === FIX ===
         // 'fetchWithAuth' use karenge
@@ -1079,9 +1043,6 @@ async function handleContactForm(e) {
         message: document.getElementById('contactMessage').value,
     };
 
-    // NOTE: Aapki file mein 'API_BASE' likha tha, par upar 'BASE_URL' define hai.
-    // Hum maan rahe hain ki 'API_BASE' 'BASE_URL' hi hai.
-    const API_BASE = BASE_URL;
     try {
         // Yeh public hai, normal fetch
         const response = await fetch(`${API_BASE}/auth/contact/`, {
