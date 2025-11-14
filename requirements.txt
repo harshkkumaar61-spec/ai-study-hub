@@ -8,16 +8,13 @@ gunicorn
 # Database
 dj-database-url
 psycopg2-binary  # <-- Render par Postgres DB ke liye yeh zaroori hai
-# mysqlclient    # <-- Yeh aapke local MySQL ke liye tha, Render par iski zaroorat nahi
 
-# Media Files
+# Media Files (Profile Pics/PDFs)
 Pillow           # <-- Profile Pics (ImageField) ke liye zaroori hai
+django-storages  # <-- AWS S3 par media save karne ke liye
+boto3            # <-- AWS S3 se connect karne ke liye
 
 # AI (LlamaIndex/Ollama)
 llama-index
 llama-index-llms-ollama
 llama-index-embeddings-ollama
-
-# Media Files (AWS S3 Storage ke liye)
-django-storages
-boto3
