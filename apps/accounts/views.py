@@ -54,7 +54,7 @@ class RegisterView(APIView):
             
             try:
                 # IMPORTANT: Yahaan 'frontend_url' ko Vercel URL se badalna hoga
-                frontend_url = 'https://ai-study-hub-delta.vercel.app' # <-- AAPKA VERCEL URL
+                frontend_url = "https://your-frontend.vercel.app"# <-- AAPKA VERCEL URL
                 verification_link = f"{frontend_url}/?verify_token={user.verification_token}"
                 
                 subject = 'Activate your AI Study Hub Account'

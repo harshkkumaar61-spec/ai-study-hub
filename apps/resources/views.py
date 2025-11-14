@@ -1,43 +1,57 @@
+# apps/resources/views.py
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from .models import Resource, Subject
 from .serializers import ResourceSerializer, SubjectSerializer
+import traceback
+import sys
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SubjectViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    Sabhi Subjects ko list karne ke liye API.
-    (ReadOnly = Sirf dekh sakte hain, frontend se add/delete nahi kar sakte)
-    """
     queryset = Subject.objects.all()
     serializer_class = SubjectSerializer
-    permission_classes = [permissions.AllowAny] # Koi bhi subjects dekh sakta hai
-
+    permission_classes = [permissions.AllowAny]
 
 class ResourceViewSet(viewsets.ModelViewSet):
     """
-    Sabhi Resources ko list karne aur naye upload karne ke liye API.
+    DEBUG PATCH: wraps list() and perform_create() with try/except to show helpful error info.
+    Remove debug code after fixing the underlying issue.
     """
-    
-    # --- YAHAN FIX KIYA GAYA HAI ---
-    # Ab yeh 'is_approved=True' ka wait nahi karega.
-    # Yeh sabhi resources ko dikha dega jo database mein hain.
-    queryset = Resource.objects.all() 
-    # --- FIX END ---
-
+    queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
-    
-    # Permissions set kar rahe hain
+
     def get_permissions(self):
-        if self.action == 'list' or self.action == 'retrieve':
-            # 'list' (saare dekhna) ya 'retrieve' (ek dekhna) koi bhi kar sakta hai
+        if self.action in ('list', 'retrieve'):
             permission_classes = [permissions.AllowAny]
         else:
-            # 'create' (upload), 'update', 'delete' sirf logged-in user hi kar sakta hai
             permission_classes = [permissions.IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    # debug-safe list
+    def list(self, request, *args, **kwargs):
+        try:
+            return super().list(request, *args, **kwargs)
+        except Exception as e:
+            # Log full traceback to server console
+            tb = traceback.format_exc()
+            logger.error("Error in ResourceViewSet.list(): %s\n%s", str(e), tb)
+            print("DEBUG Resource list error:", str(e), file=sys.stderr)
+            print(tb, file=sys.stderr)
+            # Return JSON with error details (only for debugging, remove later)
+            return Response({
+                "detail": "Server error while loading resources (debug info below).",
+                "error": str(e),
+                "traceback": tb.splitlines()[-10:]  # last 10 lines for brevity
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     def perform_create(self, serializer):
-        # Jab koi naya resource 'create' (upload) kare,
-        # toh 'uploaded_by' field mein current user ko automatically save kar do.
-        # Hum 'is_approved=False' bhi set kar sakte hain, taaki admin pehle check kare.
-        serializer.save(uploaded_by=self.request.user, is_approved=True) # Abhi ke liye auto-approve
+        try:
+            serializer.save(uploaded_by=self.request.user, is_approved=True)
+        except Exception as e:
+            tb = traceback.format_exc()
+            logger.error("Error in ResourceViewSet.perform_create(): %s\n%s", str(e), tb)
+            print("DEBUG Resource create error:", str(e), file=sys.stderr)
+            print(tb, file=sys.stderr)
+            raise

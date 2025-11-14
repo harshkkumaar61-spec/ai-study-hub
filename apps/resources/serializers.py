@@ -1,35 +1,48 @@
+# apps/resources/serializers.py
+import os
 from rest_framework import serializers
 from .models import Resource, Subject
-# from apps.accounts.serializers import UserProfileSerializer # <-- ISKO HATA DIYA HAI
 
 class SubjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subject
         fields = ['id', 'name', 'branch', 'semester']
 
-
 class ResourceSerializer(serializers.ModelSerializer):
-    # --- YEH LINE BADAL DI GAYI HAI ---
-    # Humne poora profile dikhane ki jagah, sirf user ka naam/email (jo __str__ method se aata hai)
-    # dikhane ka faisla kiya hai, taaki import error fix ho jaaye.
-    uploaded_by = serializers.StringRelatedField(read_only=True)
-    
-    # Hum 'subject' ki ID ki jagah poori subject details dikhana chahte hain
+    # nested representation for reads
     subject = SubjectSerializer(read_only=True)
-    
-    # File ka naam dikhane ke liye
-    filename = serializers.CharField(source='filename', read_only=True)
+
+    # write-only field used during create/update to accept a subject id
+    subject_id = serializers.PrimaryKeyRelatedField(
+        source='subject', queryset=Subject.objects.all(), write_only=True, required=True
+    )
+
+    uploaded_by = serializers.StringRelatedField(read_only=True)
+
+    # Return filename safely (avoids CharField(source=...) conflict)
+    filename = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Resource
         fields = [
-            'id', 
-            'title', 
-            'subject', 
-            'resource_type', 
-            'pdf_file', 
+            'id',
+            'title',
+            'subject',       # nested read-only subject object
+            'subject_id',    # write-only field: supply subject id when creating
+            'resource_type',
+            'pdf_file',
             'filename',
-            'uploaded_by', 
+            'uploaded_by',
             'uploaded_at',
-            'is_approved'
+            'is_approved',
         ]
+
+    def get_filename(self, obj):
+        # Return the base filename or None if no file
+        try:
+            if not obj.pdf_file:
+                return None
+            # If using FileField, obj.pdf_file.name gives the relative path
+            return os.path.basename(obj.pdf_file.name)
+        except Exception:
+            return None

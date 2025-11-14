@@ -28,7 +28,7 @@
             </div>
 
             <div class="nav-auth">
-                </div>
+            </div>
 
             <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
                 <i class="fas fa-bars"></i>
@@ -138,7 +138,8 @@
                 <div class="search-box">
                     <i class="fas fa-search"></i>
                     <input type="text" id="searchInput" placeholder="Search resources by title or subject...">
-                    <button class="btn-search">Search</button> </div>
+                    <button class="btn-search">Search</button>
+                </div>
 
                 <div class="filter-section">
                     <select id="subjectFilter" class="filter-select">
@@ -182,7 +183,33 @@
             </div>
 
             <div id="resourcesGrid" class="resources-grid">
+                <!-- Resource card example (paste inside your resources grid) -->
+                <div class="resource-card" data-id="12">
+                    <div class="resource-type type-notes">
+                        <i class="fas fa-book"></i> Handwritten Notes
+                    </div>
+                    <h3 class="resource-title">Electronics - Chapter 1 Notes</h3>
+
+                    <div class="resource-meta">
+                        <span class="meta-item"><i class="fas fa-book-open"></i> Electronics</span>
+                        <span class="meta-item"><i class="fas fa-calendar"></i> 2025</span>
+                        <span class="meta-item"><i class="fas fa-user-graduate"></i> admin</span>
+                    </div>
+
+                    <p class="resource-description">Download this handwritten notes for Electronics.</p>
+
+                    <div class="resource-actions">
+                        <a class="download-btn" href="/media/resource_pdfs/electronics_ch1.pdf" download>
+                            <i class="fas fa-download"></i> Download PDF
+                        </a>
+                        <button class="preview-btn"
+                            onclick="previewResource('/media/resource_pdfs/electronics_ch1.pdf')">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
                 </div>
+
+            </div>
 
             <div class="load-more-section">
                 <button class="btn-load-more" onclick="loadMoreResources()">
@@ -462,14 +489,14 @@
                 <h2>Upload Resource</h2>
                 <p>Share your study materials with others</p>
             </div>
-            
+
             <form id="uploadForm" class="modal-form">
-                
+
                 <div class="form-group">
                     <label for="uploadTitle">Resource Title</label>
                     <input type="text" id="uploadTitle" placeholder="e.g., 'Calculus Mid-Term Paper 2024'" required>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="uploadSubject">Subject</label>
@@ -486,23 +513,23 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="uploadFile">PDF File</label>
                     <input type="file" id="uploadFile" accept=".pdf" required>
                     <small>Please upload PDF files only.</small>
                 </div>
-                
+
                 <div id="uploadErrors" class="form-errors" style="display:none;"></div>
 
                 <button type="submit" class="btn-primary btn-full">
                     <i class="fas fa-cloud-upload-alt"></i> Upload Now
                 </button>
             </form>
-            
+
         </div>
     </div>
-    
+
     <div id="profileModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeProfileModal()">&times;</span>
@@ -510,9 +537,9 @@
                 <h2>Profile Settings</h2>
                 <p>Update your public profile information</p>
             </div>
-            
+
             <form id="profileForm" class="modal-form">
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="profileFirstName">First Name</label>
@@ -523,20 +550,20 @@
                         <input type="text" id="profileLastName" placeholder="Your last name">
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="profilePic">Profile Picture</label>
                     <input type="file" id="profilePic" accept="image/png, image/jpeg">
                     <small>Upload a new .jpg or .png file. Leave blank to keep current picture.</small>
                 </div>
-                
+
                 <div id="profileErrors" class="form-errors" style="display:none;"></div>
 
                 <button type="submit" class="btn-primary btn-full">
                     <i class="fas fa-save"></i> Save Changes
                 </button>
             </form>
-            
+
         </div>
     </div>
 
@@ -547,9 +574,9 @@
                 <h2>Download History</h2>
                 <p>Here are the resources you've recently downloaded.</p>
             </div>
-            
+
             <div class="modal-body" id="historyModalBody">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -575,7 +602,7 @@
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="message-content">
-                    <p><strong>Hello! I'm your AI study companion.</strong>  How can I help you today?</p>
+                    <p><strong>Hello! I'm your AI study companion.</strong> How can I help you today?</p>
                 </div>
             </div>
         </div>
@@ -594,6 +621,8 @@
         <i class="fas fa-robot"></i>
         <span class="ai-notification"></span>
     </button>
+
+
 
     <button id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()">
         <i class="fas fa-chevron-up"></i>

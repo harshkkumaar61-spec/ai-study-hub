@@ -1,5 +1,6 @@
 // ===== GLOBAL VARIABLES =====
-const API_BASE = 'https://ungregariously-unbangled-braxton.ngrok-free.dev/api'; // <-- YEH NGROK URL HAI
+// FIX: API_BASE ko local Django server par point kiya
+const BASE_URL = "https://your-backend.onrender.com/api"; // <--- YAHAN FIX KIYA!
 let currentUser = null;
 let authToken = localStorage.getItem('authToken'); // Token ko load kiya
 let currentResources = [];
@@ -522,7 +523,7 @@ async function handleUpload(e) {
         errorDiv.style.display = 'block';
         return;
     }
-     if (!subjectId) {
+    if (!subjectId) {
         errorDiv.textContent = 'Please select a subject.';
         errorDiv.style.display = 'block';
         return;
@@ -534,24 +535,22 @@ async function handleUpload(e) {
 
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('subject', subjectId);
+    // <-- IMPORTANT: use subject_id to match backend serializer
+    formData.append('subject_id', subjectId);
     formData.append('resource_type', type);
     formData.append('pdf_file', file);
 
     try {
-        // === FIX ===
-        // 'fetchWithAuth' use karenge.
-        // Yeh FormData ke saath kaam karega (Content-Type set nahi karega).
         const response = await fetchWithAuth(`${API_BASE}/resources/files/`, {
             method: 'POST',
             body: formData
         });
-        // === END FIX ===
 
-        if (response.status === 201) { // 201 Created
+        if (response.status === 201) {
             showNotification('Resource uploaded! It will be visible after admin approval.', 'success');
             closeUploadModal();
             e.target.reset();
+            loadResources();
         } else {
             const data = await response.json();
             let errorMsg = 'Upload failed. Please try again.';
@@ -571,6 +570,7 @@ async function handleUpload(e) {
         submitBtn.disabled = false;
     }
 }
+
 
 async function handleProfileUpdate(e) {
     e.preventDefault();
@@ -838,8 +838,13 @@ async function downloadResource(resourceId, pdfUrl) {
 }
 
 function previewResource(pdfUrl) {
+    // Option A: open in new tab
     window.open(pdfUrl, '_blank');
-}
+  
+    // Option B: show in modal using iframe (if you have modal)
+    // document.getElementById('pdfPreviewFrame').src = pdfUrl;
+    // open modal...
+  }
 
 async function loadHistory() {
     const body = document.getElementById('historyModalBody');
