@@ -6,7 +6,7 @@
 (() => {
   // ---------- CONFIG ----------
   // Change this if your backend is on ngrok or different host (include /api)
-  const API_BASE = "https://your-backend.onrender.com/api";
+  const API_BASE = "https://ai-study-hub-vgto.onrender.com/api";
 
   const AI_STATUS_ENDPOINT = '/ai/status/';
   const AI_QUERY_ENDPOINT = '/ai/query/';
