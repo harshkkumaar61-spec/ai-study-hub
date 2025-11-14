@@ -6,7 +6,9 @@
 (() => {
   // ---------- CONFIG ----------
   // Change this if your backend is on ngrok or different host (include /api)
-  const API_BASE = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api";
+  const API_BASE = (window.API_BASE && window.API_BASE.trim())
+  ? window.API_BASE.trim()
+  : 'https://ungregariously-unbangled-braxton.ngrok-free.dev/api';
 
   const AI_STATUS_ENDPOINT = '/ai/status/';
   const AI_QUERY_ENDPOINT = '/ai/query/';
