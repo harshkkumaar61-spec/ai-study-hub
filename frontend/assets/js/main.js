@@ -1,6 +1,6 @@
 // ===== GLOBAL VARIABLES =====
 // FIX: API_BASE ko local Django server par point kiya
-const BASE_URL = "https://your-backend.onrender.com/api"; // <--- YAHAN FIX KIYA!
+const BASE_URL = "https://ai-study-hub-vgto.onrender.com/api"; // <--- YAHAN FIX KIYA!
 let currentUser = null;
 let authToken = localStorage.getItem('authToken'); // Token ko load kiya
 let currentResources = [];
