@@ -1,6 +1,6 @@
 // ===== GLOBAL VARIABLES =====
 // FIX: Variable ka naam (API_BASE) aur URL (Ngrok) dono fix kar diye
-const API_BASE = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api"; // <--- YAHAN FIX KIYA!
+const API_BASE = "https://ungregariously-unbangled-braxton.ngrok-free.dev/api";
 let currentUser = null;
 let authToken = localStorage.getItem('authToken'); // Token ko load kiya
 let currentResources = [];
