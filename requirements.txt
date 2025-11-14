@@ -1,12 +1,19 @@
-Django>=5.0
-djangorestframework>=3.14
-django-cors-headers>=4.0
-dj-database-url>=2.0
-psycopg2-binary>=2.9
-mysqlclient>=2.2
-gunicorn>=21.2
-whitenoise>=6.6
-python-dotenv>=1.0
-Pillow>=10.0
-requests>=2.31
-django-environ>=0.11.2
+# Django aur Web Server
+django
+djangorestframework
+djangorestframework-simplejwt
+django-cors-headers
+gunicorn
+
+# Database
+dj-database-url
+psycopg2-binary  # <-- Render par Postgres DB ke liye yeh zaroori hai
+# mysqlclient    # <-- Yeh aapke local MySQL ke liye tha, Render par iski zaroorat nahi
+
+# Media Files
+Pillow           # <-- Profile Pics (ImageField) ke liye zaroori hai
+
+# AI (LlamaIndex/Ollama)
+llama-index
+llama-index-llms-ollama
+llama-index-embeddings-ollama
